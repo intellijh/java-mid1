@@ -25,23 +25,19 @@ public class TestCalendarPrinter2 {
         LocalDate firstDayOfNextMonth = firstDayOfMonth.plusMonths(1);
 
         int offsetWeekDays = firstDayOfMonth.getDayOfWeek().getValue() % 7;
+
         System.out.println("Su Mo Tu We Th Fr Sa");
         for (int i = 0; i < offsetWeekDays; i++) {
             System.out.print("   ");
         }
 
-        DayOfWeek firstDayOfWeek = localDate.with(TemporalAdjusters.firstDayOfMonth()).getDayOfWeek();
-        int firstDay = 0;
-
-        while (localDate.getMonthValue() == month) {
-            int dayOfMonth = localDate.getDayOfMonth();
-            if ((dayOfMonth - 1) < firstDay) {
-                localDate = localDate.plusDays(1);
-                System.out.printf("%3s", " ");
-                continue;
+        LocalDate dayIterator = firstDayOfMonth;
+        while (dayIterator.isBefore(firstDayOfNextMonth)) {
+            System.out.printf("%2d ", dayIterator.getDayOfMonth());
+            if (dayIterator.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                System.out.println();
             }
-            System.out.printf("%3d", dayOfMonth);
-            localDate = localDate.plusDays(1);
+            dayIterator = dayIterator.plusDays(1);
         }
     }
 }
